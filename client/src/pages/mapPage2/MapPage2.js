@@ -8,7 +8,7 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet.locatecontrol';
 import markerIcon from './images/marker-icon.png';
 import markerIcon2x from './images/marker-icon-2x.png';
-import jsonData from './json/filtered_nodes_928_1.json';
+import jsonData from './json/filtered_nodes_6566.json';
 
 import styles from './map.module.css'
 
@@ -128,26 +128,7 @@ export default function MapPage2({markersData}) {
                 layer.bindPopup(popupContent);
             }
         });
-
-        // Перебор каждого маркера
-        geojsonLayer.eachLayer(function(layer) {
-            var marker = layer.toGeoJSON();
-            var markerLatLng = L.latLng(marker.geometry.coordinates[1], marker.geometry.coordinates[0]);
-
-            // Перебор остальных маркеров для сравнения расстояния
-            geojsonLayer.eachLayer(function(otherLayer) {
-                if (otherLayer !== layer) {
-                    var otherMarker = otherLayer.toGeoJSON();
-                    var otherMarkerLatLng = L.latLng(otherMarker.geometry.coordinates[1], otherMarker.geometry.coordinates[0]);
-
-                    var distance = markerLatLng.distanceTo(otherMarkerLatLng);
-
-                    if (distance < 30) {
-                        geojsonLayer.removeLayer(otherLayer);
-                    }
-                }
-            });
-        });
+        
         // Добавление слоя GeoJSON в слой с кластеризацией
         // markers.addLayer(geojsonLayer);
         // Add markers to the cluster group

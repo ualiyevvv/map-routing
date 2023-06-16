@@ -11,7 +11,7 @@ export default function Router(){
 		<Routes>
 			<Route path={'/'} element={<Landing />}/>
 			<Route path={'/mapPage1'} element={<MapPage1 />}/>
-			<Route path={'/mapPage1'} element={<MapPage2 />}/>
+			<Route path={'/mapPage2'} element={<MapPage2 />}/>
 		</Routes>
 	);
 }
