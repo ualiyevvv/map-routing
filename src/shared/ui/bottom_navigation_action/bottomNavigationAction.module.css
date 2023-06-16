@@ -1,0 +1,34 @@
+.bottomNavigationAction {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    padding: 2px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    /*font-size: 14px;*/
+    /*font-weight: 500;*/
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: 600;
+    font-size: 16px;
+}
+.bottomNavigationAction:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+.bottomNavigationAction svg path {
+    fill: rgba(255, 255, 255, 0.4);;
+}
+.bottomNavigationAction span {
+    margin-top: 2px;
+    text-align: center;
+}
+.bottomNavigationAction-active {
+    color: white;
+    /*font-weight: 600;*/
+}
+.bottomNavigationAction-active svg path {
+    fill: white;
+}

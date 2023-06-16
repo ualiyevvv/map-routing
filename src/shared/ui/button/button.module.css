@@ -1,0 +1,46 @@
+.btn {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* margin-top: 10px; */
+    /* margin-bottom: 10px; */
+    cursor: pointer;
+}
+.btn a {
+    color: white;
+    text-decoration: none;
+}
+.btn:hover {
+    opacity: 95%;
+}
+.btn-main {
+    background-color: #1E262F;
+    color: white;
+}
+.btn-second {
+    background-color: #2086E5;
+    color: white;
+}
+.btn-control {
+    background-color: #1E262F;
+    border-radius: 40px;
+    color: white;
+    font-weight: 600;
+}
+.btn-small {
+    font-weight: 600;
+    font-size: 16px;
+
+}
+.btn-big {
+    /*font-weight: 800;*/
+}
+
+.btn:disabled {
+    background-color: grey;
+}

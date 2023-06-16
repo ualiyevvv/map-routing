@@ -1,0 +1,38 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [13.404954, 52.520008]
+      },
+      "properties": {
+        "name": "Berlin",
+        "description": "Capital of Germany"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-0.12755, 51.507222]
+      },
+      "properties": {
+        "name": "London",
+        "description": "Capital of the United Kingdom"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.352222, 48.856614]
+      },
+      "properties": {
+        "name": "Paris",
+        "description": "Capital of France"
+      }
+    }
+  ]
+}
