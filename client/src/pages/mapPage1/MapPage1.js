@@ -124,8 +124,29 @@ export default function MapPage1({markersData}) {
                 for (let key in properties) {
                     popupContent += '<strong>' + key + ':</strong> ' + properties[key] + '<br>';
                 }
+                console.log(feature)
+                popupContent += '<strong>coordinates: </strong> ' + feature.geometry.coordinates + '<br>';
                 // Привязка всплывающей подсказки к маркеру
                 layer.bindPopup(popupContent);
+            }
+        });
+
+        // Полигон, заданный набором координат
+        const polygonBounds = [
+            [51.098086312468126,71.40506845862981],
+            [51.13692257363482,71.4149711743988],
+            [51.13260246911827,71.4413783580778],
+            [51.09479900021634,71.42747209442521],
+        ];
+        const polygon = L.polygon(polygonBounds, {color: 'red'}).addTo(map);
+
+        // Перебор каждого маркера
+        geojsonLayer.eachLayer(function(layer) {
+            var marker = layer.toGeoJSON();
+            var markerLatLng = L.latLng(marker.geometry.coordinates[1], marker.geometry.coordinates[0]);
+
+            if (!polygon.getBounds().contains(markerLatLng)) {
+                geojsonLayer.removeLayer(layer);
             }
         });
 
@@ -149,7 +170,7 @@ export default function MapPage1({markersData}) {
             });
         });
         // Добавление слоя GeoJSON в слой с кластеризацией
-        // markers.addLayer(geojsonLayer);
+        markers.addLayer(geojsonLayer);
         // Add markers to the cluster group
         // const marker1 = L.marker([51.5, -0.09]).bindPopup('Marker 1');
         // const marker2 = L.marker([51.51, -0.1]).bindPopup('Marker 2');
@@ -157,8 +178,8 @@ export default function MapPage1({markersData}) {
         // markers.addLayers([marker1, marker2, marker3]);
 
         // Add the marker cluster group to the mapPage1
-        map.addLayer(geojsonLayer);
-        // mapPage1.addLayer(markers);
+        // map.addLayer(geojsonLayer);
+        map.addLayer(markers);
         // console.log("valueNames", valueNames);
         return () => {
             // Очистка карты при размонтировании компонента

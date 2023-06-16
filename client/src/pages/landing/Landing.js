@@ -12,6 +12,7 @@ export default function Landing({}){
         <div className={styles['landingButtons']}>
             <Button bottom={10} onClick={e => navigate('/mapPage1')}>1st Map</Button>
             <Button bottom={10} onClick={e => navigate('/mapPage2')}>2nd Map</Button>
+            <Button bottom={10} onClick={e => navigate('/mapboxPage')}>Mapbox</Button>
         </div>
     </div>)
 }

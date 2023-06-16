@@ -36,6 +36,7 @@
 
 Это основные атрибуты, которые можно получить из графа, созданного с помощью OSMnx. Кроме того, вы также можете добавлять пользовательские атрибуты к узлам и ребрам при создании графа.
 
+### Работа с дорожным графом:
 Тег `highway` - основной и часто единственный для обозначения дорог и улиц. Ряд значений, которые он может принимать:
 - `primary` - Автомобильные дороги регионального значения
 - `secondary` - Автомобильные дороги областного значения
@@ -47,4 +48,20 @@
 - `footway` - Пешеходные дорожки. Если по ним разрешено передвижение на велосипеде, то необходимо добавить тег `bicycle=yes`.
 - `cycleway` - Велодорожка. Если это дорожка и для пешеходов, можно добавить тег foot=yes.
 
-![alt text](graph-drive-road.png "graph-drive-road.png")
+![alt text](./graph-drive-road.png "graph-drive-road")
+
+
+### Работа с объектами (здания, парки, учреждения):
+`osmnx.geometries.geometries_from_address(address, tags, dist=1000))`
+
+Create GeoDataFrame of OSM entities within some distance N, S, E, W of address.
+
+PARAMETERS:
+- `address` (string) – the address to geocode and use as the central point around which to get the geometries
+- `tags` (dict) – Dict of tags used for finding objects in the selected area. Results returned are the union, not intersection of each individual tag. Each result matches at least one given tag. The dict keys should be OSM tags, (e.g., building, landuse, highway, etc) and the dict values should be either True to retrieve all items with the given tag, or a string to get a single tag-value combination, or a list of strings to get multiple values for the given tag. For example, tags = {‘building’: True} would return all building footprints in the area. tags = {‘amenity’:True, ‘landuse’:[‘retail’,’commercial’], ‘highway’:’bus_stop’} would return all amenities, landuse=retail, landuse=commercial, and highway=bus_stop.
+- `dist` (numeric) – distance in meters
+
+RETURNS: `gdf`
+
+RETURN TYPE: `geopandas.GeoDataFrame`
+

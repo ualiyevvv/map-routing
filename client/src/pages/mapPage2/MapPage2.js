@@ -128,7 +128,7 @@ export default function MapPage2({markersData}) {
                 layer.bindPopup(popupContent);
             }
         });
-        
+
         // Добавление слоя GeoJSON в слой с кластеризацией
         // markers.addLayer(geojsonLayer);
         // Add markers to the cluster group

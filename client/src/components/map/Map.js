@@ -169,7 +169,7 @@ export default function MapModal({}){
 
 
     return (
-        <div className={styles['mapPage1-container']}>
+        <>
 
             <div ref={mapContainer} style={{width: '100%', height: '100%'}} />
 
@@ -185,6 +185,6 @@ export default function MapModal({}){
             </div>
 
 
-        </div>
+        </>
     );
 }
