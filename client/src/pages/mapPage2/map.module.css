@@ -1,0 +1,52 @@
+.map-container {
+    width: 100%;
+    height: 63vh;
+}
+/*.mapboxgl-canvas-container {*/
+/*    height: 100vh;*/
+/*}*/
+.tipsMapModal {
+    width: 100%;
+    position: absolute;
+    text-align: center;
+    top: 20%;
+    left: 50%; /* position the left edge of the element at the middle of the parent */
+    transform: translate(-50%, -50%);
+    z-index: 111111;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.modal__btn {
+    height: auto;
+}
+.legends {
+    position: relative;
+    bottom: 60px;
+    right: 20px;
+    z-index: 111111;
+    padding: 10px;
+    background-color: white;
+}
+.legends__item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.legends__milestone, .legends__traffic_signals, .legends__motorway_junction, .legends__undefined {
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+}
+.legends__milestone {
+    background-color: red;
+}
+.legends__traffic_signals {
+    background-color: blue;
+}
+.legends__motorway_junction {
+    background-color: green;
+}
+.legends__undefined {
+    background-color: gray;
+}
