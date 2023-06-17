@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
@@ -31,6 +31,37 @@ export default function MapPage1({markersData}) {
                 console.error(error);
             });
     }
+
+    async function geocode(address) {
+        // try {
+        //     const encodedAddress = encodeURIComponent(address);
+        //     const url = `https://nominatim.openstreetmap.org/search?q=${encodedAddress}&limit=20&format=json`;
+        //     fetch(url)
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             console.log(data); // Обработка полученных данных
+        //         })
+        //         .catch(error => {
+        //             console.error(error);
+        //         });
+        // } catch (error) {
+        //     console.error(error);
+        // }
+    }
+
+    const [inputValue, setInputValue] = useState('');
+
+    useEffect(() => {
+        const delay = 500; // Задержка в миллисекундах
+
+        const timer = setTimeout(() => {
+            geocode(inputValue);
+        }, delay);
+
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [inputValue])
 
     useEffect(() => {
         reverseGeocode(51.12508, 71.435436);
@@ -247,6 +278,7 @@ export default function MapPage1({markersData}) {
             <div className={styles['legends__item']}><div className={styles['legends__motorway_junction']}></div> motorway_junction</div>
             <div className={styles['legends__item']}><div className={styles['legends__undefined']}></div>undefined</div>
             <div className={styles['legends__item']}><button type={'button'} disabled={!isReadyToDownload} onClick={handleSave}>Download json</button></div>
+            <div className={styles['legends__item']}><input type="text" value={inputValue} onChange={e => setInputValue(e.target.value)} /></div>
         </div>
     </div>)
 }
