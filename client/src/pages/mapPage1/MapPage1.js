@@ -17,9 +17,23 @@ export default function MapPage1({markersData}) {
 
     const geoPosition = [51.11170294584818,71.40717028568645]
     const mapContainerRef = useRef();
-    const [selectedEvent, setSelectedEvent] = useState(null);
+    const [isReadyToDownload, setIsReadyToDownload] = useState(false);
+    const [json, setJson] = useState({});
+
+    async function reverseGeocode(lat, lon) {
+        const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); // Обработка полученных данных
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
 
     useEffect(() => {
+        reverseGeocode(51.12508, 71.435436);
         // Создание карты и установка начальных координат и масштаба
         const map = L.map(mapContainerRef.current).setView(geoPosition, 11);
 
@@ -104,7 +118,6 @@ export default function MapPage1({markersData}) {
             fillOpacity: 0.8
         };
 
-        // const valueNames = [];
         // Загрузка GeoJSON данных
         const geojsonLayer = L.geoJSON(jsonData, {
             pointToLayer: function(feature, latlng) {
@@ -138,30 +151,38 @@ export default function MapPage1({markersData}) {
             [51.13260246911827,71.4413783580778],
             [51.09479900021634,71.42747209442521],
         ];
+
+        const polygonBoundsSmall = [
+            [51.1259340577393,71.41286890981846],
+            [51.12321370266267,71.43078415985701],
+            [51.10932058988266,71.42574962267682],
+            [51.11163207750067,71.410165605781]
+        ];
+        // const polygon = L.polygon(polygonBoundsSmall, {color: 'red'}).addTo(map);
         const polygon = L.polygon(polygonBounds, {color: 'red'}).addTo(map);
 
-        // Перебор каждого маркера
+        // Фильтр: маркеры в рамках полигона. Перебор каждого маркера
         geojsonLayer.eachLayer(function(layer) {
-            var marker = layer.toGeoJSON();
-            var markerLatLng = L.latLng(marker.geometry.coordinates[1], marker.geometry.coordinates[0]);
+            const marker = layer.toGeoJSON();
+            const markerLatLng = L.latLng(marker.geometry.coordinates[1], marker.geometry.coordinates[0]);
 
             if (!polygon.getBounds().contains(markerLatLng)) {
                 geojsonLayer.removeLayer(layer);
             }
         });
 
-        // Перебор каждого маркера
+        // Фильтр: убираем маркеры в радиусе 30 метров. Перебор каждого маркера
         geojsonLayer.eachLayer(function(layer) {
-            var marker = layer.toGeoJSON();
-            var markerLatLng = L.latLng(marker.geometry.coordinates[1], marker.geometry.coordinates[0]);
+            const marker = layer.toGeoJSON();
+            const markerLatLng = L.latLng(marker.geometry.coordinates[1], marker.geometry.coordinates[0]);
 
             // Перебор остальных маркеров для сравнения расстояния
             geojsonLayer.eachLayer(function(otherLayer) {
                 if (otherLayer !== layer) {
-                    var otherMarker = otherLayer.toGeoJSON();
-                    var otherMarkerLatLng = L.latLng(otherMarker.geometry.coordinates[1], otherMarker.geometry.coordinates[0]);
+                    const otherMarker = otherLayer.toGeoJSON();
+                    const otherMarkerLatLng = L.latLng(otherMarker.geometry.coordinates[1], otherMarker.geometry.coordinates[0]);
 
-                    var distance = markerLatLng.distanceTo(otherMarkerLatLng);
+                    const distance = markerLatLng.distanceTo(otherMarkerLatLng);
 
                     if (distance < 30) {
                         geojsonLayer.removeLayer(otherLayer);
@@ -169,8 +190,24 @@ export default function MapPage1({markersData}) {
                 }
             });
         });
+
+
+        const filteredMarkersLngLat = [];
+        let counterFilteredMarkersLngLat = 0;
+        // Фильтр: убираем маркеры в радиусе 30 метров. Перебор каждого маркера
+        geojsonLayer.eachLayer(function(layer) {
+            const marker = layer.toGeoJSON();
+            const markerLngLat = [marker.geometry.coordinates[0], marker.geometry.coordinates[1]];
+
+            filteredMarkersLngLat.push(markerLngLat);
+            counterFilteredMarkersLngLat++;
+        });
+
+        setJson({filteredMarkersLngLat, counterFilteredMarkersLngLat})
+        setIsReadyToDownload(true);
+
         // Добавление слоя GeoJSON в слой с кластеризацией
-        markers.addLayer(geojsonLayer);
+        // markers.addLayer(geojsonLayer);
         // Add markers to the cluster group
         // const marker1 = L.marker([51.5, -0.09]).bindPopup('Marker 1');
         // const marker2 = L.marker([51.51, -0.1]).bindPopup('Marker 2');
@@ -178,14 +215,28 @@ export default function MapPage1({markersData}) {
         // markers.addLayers([marker1, marker2, marker3]);
 
         // Add the marker cluster group to the mapPage1
-        // map.addLayer(geojsonLayer);
-        map.addLayer(markers);
+        map.addLayer(geojsonLayer);
+        // map.addLayer(markers);
         // console.log("valueNames", valueNames);
         return () => {
             // Очистка карты при размонтировании компонента
             map.remove();
         };
     }, []);
+
+
+    const handleSave = () => {
+        if (isReadyToDownload) {
+            const jsonData = JSON.stringify(json);
+            const blob = new Blob([jsonData], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'data.json';
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+    };
 
     return (<div style={{height: '100%'}}>
         <div ref={mapContainerRef} style={{ height: '100%' }}></div>
@@ -195,6 +246,7 @@ export default function MapPage1({markersData}) {
             <div className={styles['legends__item']}><div className={styles['legends__traffic_signals']}></div> traffic_signals</div>
             <div className={styles['legends__item']}><div className={styles['legends__motorway_junction']}></div> motorway_junction</div>
             <div className={styles['legends__item']}><div className={styles['legends__undefined']}></div>undefined</div>
+            <div className={styles['legends__item']}><button type={'button'} disabled={!isReadyToDownload} onClick={handleSave}>Download json</button></div>
         </div>
     </div>)
 }
