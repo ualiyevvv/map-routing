@@ -2,7 +2,7 @@ import osmnx as ox
 import json
 
 # Загрузка данных из файла JSON
-with open('./json/filtered_points_small.json', 'r') as file:
+with open('./json/filtered_points_example.json', 'r') as file:
     data = json.load(file)
     points = data["filteredMarkersLngLat"]
 
@@ -36,7 +36,7 @@ for i, point in enumerate(points):
 
 # Сохранение результатов в виде матрицы расстояний в новый JSON-файл
 output_data = {'distances': distances}
-with open('./json/output_distance_matrix_small.json', 'w') as output_file:
+with open('./json/output_distance_matrix_example.json', 'w') as output_file:
     json.dump(output_data, output_file)
 
 print("Матрица расстояний сохранена в файле 'output_distance_matrix.json' в папке json.")

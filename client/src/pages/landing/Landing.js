@@ -13,6 +13,7 @@ export default function Landing({}){
             <Button bottom={10} onClick={e => navigate('/mapPage1')}>1st Map</Button>
             <Button bottom={10} onClick={e => navigate('/mapPage2')}>2nd Map</Button>
             <Button bottom={10} onClick={e => navigate('/mapboxPage')}>Mapbox</Button>
+            <Button bottom={10} onClick={e => navigate('/earth')}>Mapbox</Button>
         </div>
     </div>)
 }
